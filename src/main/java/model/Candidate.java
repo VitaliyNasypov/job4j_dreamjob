@@ -6,6 +6,5 @@ public class Candidate {
     private int age;
 
     public void AddResume() {
-
     }
 }
