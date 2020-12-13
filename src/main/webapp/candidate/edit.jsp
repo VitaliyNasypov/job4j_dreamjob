@@ -30,13 +30,21 @@
                 </ul>
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Новый кандидат.
+                Добавить нового кандидата
             </div>
             <div class="card-body">
                 <form>
                     <div class="form-group">
                         <label>Имя</label>
                         <input type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                         <label>Фамилия</label>
+                         <input type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                         <label>Возраст</label>
+                         <input type="text" class="form-control">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
