@@ -12,14 +12,14 @@ public class Store {
 
     private static final Store INST = new Store();
 
-    private Map<Integer, Post> posts = new ConcurrentHashMap<>();
+    private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
 
-    private Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
+    private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private Store() {
-        posts.put(1, new Post(1, "Junior Java Job","Developer", LocalDateTime.now()));
-        posts.put(2, new Post(2, "Middle Java Job","Tester", LocalDateTime.now()));
-        posts.put(3, new Post(3, "Senior Java Job","DevOps", LocalDateTime.now()));
+        posts.put(1, new Post(1, "Junior Java Job","Requirements: Java Core", LocalDateTime.now()));
+        posts.put(2, new Post(2, "Middle Java Job","Requirements: Spring, Hibernate", LocalDateTime.now()));
+        posts.put(3, new Post(3, "Senior Java Job","Requirements: Software Architect", LocalDateTime.now()));
         candidates.put(1, new Candidate(1, "Киселёв","Людвиг", 26));
         candidates.put(2, new Candidate(2, "Третьяков","Аскольд", 48));
         candidates.put(3, new Candidate(3, "Андреев","Олег", 34));
@@ -35,5 +35,13 @@ public class Store {
 
     public Collection<Candidate> findAllCandidates() {
         return candidates.values();
+    }
+
+    public int getSizePosts(){
+        return posts.size();
+    }
+
+    public int getSizeCandidates(){
+        return candidates.size();
     }
 }

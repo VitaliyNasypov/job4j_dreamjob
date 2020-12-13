@@ -1,10 +1,10 @@
 package ru.job4j.dream.model;
 
 public class Candidate {
-    private int id;
-    private String firstName;
-    private String lastName;
-    private int age;
+    private final int id;
+    private final String firstName;
+    private final String lastName;
+    private final int age;
 
     public Candidate(int id, String firstName, String lastName, int age) {
         this.id = id;

@@ -1,13 +1,14 @@
 package ru.job4j.dream.model;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.time.format.DateTimeFormatter;
 
 public class Post {
-    private int id;
-    private String name;
-    private String description;
-    private LocalDateTime created;
+    private final int id;
+    private final String name;
+    private final String description;
+    private final LocalDateTime created;
+    private final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("hh:mm dd.MM.yyyy");
 
     public Post(int id, String name, String description, LocalDateTime created) {
         this.id = id;
@@ -32,16 +33,29 @@ public class Post {
         return created;
     }
 
+    public String getCreatedString() {
+        return dtf.format(created);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Post post = (Post) o;
-        return id == post.id;
+
+        if (id != post.id) return false;
+        if (name != null ? !name.equals(post.name) : post.name != null) return false;
+        if (description != null ? !description.equals(post.description) : post.description != null) return false;
+        return created != null ? created.equals(post.created) : post.created == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (created != null ? created.hashCode() : 0);
+        return result;
     }
 }

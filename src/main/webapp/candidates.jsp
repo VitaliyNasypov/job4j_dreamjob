@@ -22,8 +22,12 @@
 </head>
 <body>
 <div class="container pt-3">
-
     <div class="row">
+    <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">Вернутся на главную</a>
+                    </li>
+                </ul>
         <div class="card" style="width: 100%">
             <div class="card-header">
                 Кандидаты
@@ -32,7 +36,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Названия</th>
+                        <th scope="col">Количество кандидатов на сайте: <%= Store.instOf().getSizeCandidates() %></th>
                     </tr>
                     </thead>
                      <thead>
