@@ -1,6 +1,7 @@
 package ru.job4j.dream.model;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class Post {
@@ -8,13 +9,14 @@ public class Post {
     private final String name;
     private final String description;
     private final LocalDateTime created;
-    private final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("hh:mm dd.MM.yyyy");
+    private final DateTimeFormatter dtf;
 
-    public Post(int id, String name, String description, LocalDateTime created) {
+    public Post(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.created = created;
+        dtf = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy");
+        created = LocalDateTime.now(ZoneId.of("UTC+3"));
     }
 
     public int getId() {
@@ -34,7 +36,7 @@ public class Post {
     }
 
     public String getCreatedString() {
-        return dtf.format(created);
+        return created.format(dtf) + " (MSK)";
     }
 
     @Override
