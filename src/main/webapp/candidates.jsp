@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.model.Candidate" %>
-<%@ page import="java.util.Collection" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <!doctype html>
 <html lang="en">
 
@@ -32,8 +32,8 @@
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">Вернутся на
-                    главную</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">
+                    Вернутся на главную</a>
             </li>
         </ul>
         <div class="card" style="width: 100%">
@@ -45,7 +45,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Количество кандидатов на сайте:
-                            <%=request.getAttribute("size candidates")%>
+                            <c:out value="${size_candidates}"/>
                         </th>
                     </tr>
                     </thead>
@@ -58,25 +58,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Candidate candidate : (Collection<Candidate>) request.getAttribute("candidates")) { %>
-                    <tr>
-                        <td>
-                            <a href="<%=request.getContextPath()%>/candidate/edit.jsp?id=<%=candidate.getId()%>">
-                                <i class="fa fa-edit mr-3"></i>
-                            </a>
-                            <%= candidate.getId() %>
-                        </td>
-                        <td>
-                            <%= candidate.getFirstName() %>
-                        </td>
-                        <td>
-                            <%= candidate.getLastName() %>
-                        </td>
-                        <td>
-                            <%= candidate.getAge() %>
-                        </td>
-                    </tr>
-                    <% } %>
+                    <c:forEach var="candidate" items="${candidates}">
+                        <tr>
+                            <td><a href="<c:url value="/candidate/edit.jsp?id=${candidate.id}"/>">
+                                <i class="fa fa-edit mr-3"></i> </a>
+                                <c:out value="${candidate.id}"/></td>
+                            <td><c:out value="${candidate.firstName}"/></td>
+                            <td><c:out value="${candidate.lastName}"/></td>
+                            <td><c:out value="${candidate.age}"/></td>
+                        </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>

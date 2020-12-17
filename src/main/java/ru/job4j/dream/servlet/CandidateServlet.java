@@ -12,7 +12,7 @@ public class CandidateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("candidates", Store.instOf().findAllCandidates());
-        req.setAttribute("size candidates", Store.instOf().getSizeCandidates());
+        req.setAttribute("size_candidates", Store.instOf().getSizeCandidates());
         req.getRequestDispatcher("candidates.jsp").forward(req, resp);
     }
 

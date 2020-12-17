@@ -12,7 +12,7 @@ public class PostServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("posts", Store.instOf().findAllPosts());
-        req.setAttribute("size posts", Store.instOf().getSizePosts());
+        req.setAttribute("size_posts", Store.instOf().getSizePosts());
         req.getRequestDispatcher("posts.jsp").forward(req, resp);
     }
 
