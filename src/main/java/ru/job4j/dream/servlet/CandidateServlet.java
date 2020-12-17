@@ -7,13 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class PostServlet extends HttpServlet {
+public class CandidateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         request.setCharacterEncoding("UTF-8");
-        Store.instOf().savePost(request.getParameter("name"),
-                request.getParameter("description"));
-        response.sendRedirect(request.getContextPath() + "/posts.jsp");
+        Store.instOf().saveCandidate(request.getParameter("firstName"),
+                request.getParameter("lastName"),
+                request.getParameter("age"));
+        response.sendRedirect(request.getContextPath() + "/candidates.jsp");
     }
 }

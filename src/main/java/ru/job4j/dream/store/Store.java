@@ -13,6 +13,7 @@ public class Store {
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
     private static AtomicInteger POST_ID = new AtomicInteger(3);
+    private static AtomicInteger CANDIDATE_ID = new AtomicInteger(3);
 
     private Store() {
         posts.put(1, new Post(1, "Junior Java Job", "Requirements: Java Core"));
@@ -43,8 +44,15 @@ public class Store {
         return candidates.size();
     }
 
-    public void save(String name, String description) {
+    public void savePost(String name, String description) {
         int id = POST_ID.incrementAndGet();
         posts.put(id, new Post(id, name, description));
+    }
+
+    public void saveCandidate(String firstName, String lastName, String age) {
+        int id = CANDIDATE_ID.incrementAndGet();
+        boolean checkAge = age.matches("^(?!-|0(?:\\.0*)?$)\\d+(?:\\d+)?$");
+        int ageCandidate = checkAge? Integer.parseInt(age) : 0;
+        candidates.put(id, new Candidate(id, firstName, lastName, ageCandidate));
     }
 }
