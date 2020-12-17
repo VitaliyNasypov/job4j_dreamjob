@@ -27,30 +27,39 @@
             </head>
 
             <body>
-                <div class="container pt-3">
-                    <div class="row">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">Вернутся на
-                                    главную</a>
-                            </li>
-                        </ul>
-                        <div class="card" style="width: 100%">
-                            <div class="card-header">
-                                Добавить новую вакансию
-                            </div>
-                            <div class="card-body">
-                                <form action="<%=request.getContextPath()%>/post/save" method="post">
-                                    <div class="form-group">
-                                        <label>Имя</label>
-                                        <input type="text" class="form-control" name="name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Описание</label>
-                                        <input type="text" class="form-control" name="description">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                                </form>
+                <% String id=request.getParameter("id"); Post post=new Post(0,"",""); if (id !=null) {
+                    post=Store.instOf().findByIdPost(Integer.parseInt(id)); } %>
+                    <div class="container pt-3">
+                        <div class="row">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">Вернутся на
+                                        главную</a>
+                                </li>
+                            </ul>
+                            <div class="card" style="width: 100%">
+                                <div class="card-header">
+                                    <% if (id==null) { %>
+                                        Добавить новую вакансию
+                                        <% } else { %>
+                                            Редактирование вакансии
+                                            <% } %>
+                                </div>
+                                <div class="card-body">
+                                    <form action="<%=request.getContextPath()%>/post/save?id=<%=post.getId()%>"
+                                        method="post">
+                                        <div class="form-group">
+                                            <label>Имя</label>
+                                            <input type="text" class="form-control" name="name"
+                                                value="<%=post.getName()%>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Описание</label>
+                                            <input type="text" class="form-control" name="description"
+                                                value="<%=post.getDescription()%>">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                                    </form>
 
             </body>
 

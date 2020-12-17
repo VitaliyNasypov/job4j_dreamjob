@@ -12,9 +12,8 @@ public class CandidateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         request.setCharacterEncoding("UTF-8");
-        Store.instOf().saveCandidate(request.getParameter("firstName"),
-                request.getParameter("lastName"),
-                request.getParameter("age"));
+        Store.instOf().saveCandidate(request.getParameter("id"), request.getParameter("firstName"),
+                request.getParameter("lastName"), request.getParameter("age"));
         response.sendRedirect(request.getContextPath() + "/candidates.jsp");
     }
 }

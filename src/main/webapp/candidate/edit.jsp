@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
     <%@ page import="ru.job4j.dream.store.Store" %>
-        <%@ page import="ru.job4j.dream.model.Post" %>
+        <%@ page import="ru.job4j.dream.model.Candidate" %>
             <!doctype html>
             <html lang="en">
 
@@ -8,6 +8,7 @@
                 <!-- Required meta tags -->
                 <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
                 <!-- Bootstrap CSS -->
                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
                     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
@@ -21,44 +22,58 @@
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
                     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
                     crossorigin="anonymous"></script>
-
+                <link rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                <title>Работа мечты</title>
                 <title>Работа мечты</title>
             </head>
 
             <body>
-                <div class="container pt-3">
-                    <div class="row">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">Вернутся на
-                                    главную</a>
-                            </li>
-                        </ul>
-                        <div class="card" style="width: 100%">
-                            <div class="card-header">
-                                Добавить нового кандидата
-                            </div>
-                            <div class="card-body">
-                                <form action="<%=request.getContextPath()%>/candidate/save" method="post">
-                                    <div class="form-group">
-                                        <label>Имя</label>
-                                        <input type="text" class="form-control" name="firstName">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Фамилия</label>
-                                        <input type="text" class="form-control" name="lastName">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Возраст</label>
-                                        <input type="text" class="form-control" name="age">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                                </form>
-                                </form>
+                <% String id=request.getParameter("id"); Candidate candidate=new Candidate(0,"","",0); if (id !=null) {
+                    candidate=Store.instOf().findByIdCandidate(Integer.parseInt(id)); } %>
+                    <div class="container pt-3">
+                        <div class="row">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">Вернутся на
+                                        главную</a>
+                                </li>
+                            </ul>
+                            <div class="card" style="width: 100%">
+                                <div class="card-header">
+                                    <% if (id==null) { %>
+                                        Добавить нового кандидата
+                                        <% } else { %>
+                                            Редактирование кандидата
+                                            <% } %>
+                                </div>
+                                <div class="card-body">
+                                    <form
+                                        action="<%=request.getContextPath()%>/candidate/save?id=<%=candidate.getId()%>"
+                                        method="post">
+                                        <div class="form-group">
+                                            <label>Имя</label>
+                                            <input type="text" class="form-control" name="firstName"
+                                                value="<%=candidate.getFirstName()%>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Фамилия</label>
+                                            <input type="text" class="form-control" name="lastName"
+                                                value="<%=candidate.getLastName()%>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Возраст</label>
+                                            <input type="text" class="form-control" name="age"
+                                                value="<%=String.valueOf(candidate.getAge()).replaceFirst(
+                                                "[0]?\\b","")%>">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                                    </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </body>
 
             </html>

@@ -44,15 +44,32 @@ public class Store {
         return candidates.size();
     }
 
-    public void savePost(String name, String description) {
-        int id = POST_ID.incrementAndGet();
+    public void savePost(String idForEdit, String name, String description) {
+        int id;
+        if (idForEdit.equals("0")) {
+            id = POST_ID.incrementAndGet();
+        } else {
+            id = Integer.parseInt(idForEdit);
+        }
         posts.put(id, new Post(id, name, description));
     }
 
-    public void saveCandidate(String firstName, String lastName, String age) {
-        int id = CANDIDATE_ID.incrementAndGet();
-        boolean checkAge = age.matches("^(?!-|0(?:\\.0*)?$)\\d+(?:\\d+)?$");
-        int ageCandidate = checkAge? Integer.parseInt(age) : 0;
+    public Post findByIdPost(int id) {
+        return posts.get(id);
+    }
+
+    public void saveCandidate(String idForEdit, String firstName, String lastName, String age) {
+        int id;
+        if (idForEdit.equals("0")) {
+            id = CANDIDATE_ID.incrementAndGet();
+        } else {
+            id = Integer.parseInt(idForEdit);
+        }
+        int ageCandidate = age.matches("^(?!-|0(?:\\.0*)?$)\\d+(?:\\d+)?$") ? Integer.parseInt(age) : 0;
         candidates.put(id, new Candidate(id, firstName, lastName, ageCandidate));
+    }
+
+    public Candidate findByIdCandidate(int id) {
+        return candidates.get(id);
     }
 }
