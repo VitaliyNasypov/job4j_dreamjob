@@ -1,7 +1,7 @@
 package ru.job4j.dream.model;
 
 public class Candidate {
-    private final int id;
+    private int id;
     private final String firstName;
     private final String lastName;
     private final int age;
@@ -27,6 +27,10 @@ public class Candidate {
 
     public int getAge() {
         return age;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

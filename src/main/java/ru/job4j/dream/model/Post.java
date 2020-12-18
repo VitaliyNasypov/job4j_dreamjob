@@ -5,18 +5,19 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class Post {
-    private final int id;
+    private int id;
     private final String name;
     private final String description;
     private final LocalDateTime created;
-    private final DateTimeFormatter dtf;
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy");
 
-    public Post(int id, String name, String description) {
+//    LocalDateTime created = LocalDateTime.now(ZoneId.of("UTC+3"));
+
+    public Post(int id, String name, String description, LocalDateTime created) {
         this.id = id;
         this.name = name;
         this.description = description;
-        dtf = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy");
-        created = LocalDateTime.now(ZoneId.of("UTC+3"));
+        this.created = created;
     }
 
     public int getId() {
@@ -35,8 +36,12 @@ public class Post {
         return created;
     }
 
-    public String getCreatedString() {
-        return created.format(dtf) + " (MSK)";
+    public String getCreatedToString() {
+        return created.format(dtf) + " (UTC)";
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -46,9 +51,15 @@ public class Post {
 
         Post post = (Post) o;
 
-        if (id != post.id) return false;
-        if (name != null ? !name.equals(post.name) : post.name != null) return false;
-        if (description != null ? !description.equals(post.description) : post.description != null) return false;
+        if (id != post.id) {
+            return false;
+        }
+        if (name != null ? !name.equals(post.name) : post.name != null) {
+            return false;
+        }
+        if (description != null ? !description.equals(post.description) : post.description != null) {
+            return false;
+        }
         return created != null ? created.equals(post.created) : post.created == null;
     }
 

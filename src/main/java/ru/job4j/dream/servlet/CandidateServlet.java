@@ -1,6 +1,6 @@
 package ru.job4j.dream.servlet;
 
-import ru.job4j.dream.store.Store;
+import ru.job4j.dream.store.MemStore;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,8 +11,8 @@ import java.io.IOException;
 public class CandidateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("candidates", Store.instOf().findAllCandidates());
-        req.setAttribute("size_candidates", Store.instOf().getSizeCandidates());
+        req.setAttribute("candidates", MemStore.instOf().findAllCandidates());
+        req.setAttribute("size_candidates", MemStore.instOf().getSizeCandidates());
         req.getRequestDispatcher("candidates.jsp").forward(req, resp);
     }
 
@@ -20,7 +20,7 @@ public class CandidateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         request.setCharacterEncoding("UTF-8");
-        Store.instOf().saveCandidate(request.getParameter("id"), request.getParameter("firstName"),
+        MemStore.instOf().saveCandidate(request.getParameter("id"), request.getParameter("firstName"),
                 request.getParameter("lastName"), request.getParameter("age"));
         response.sendRedirect(request.getContextPath() + "/candidates.do");
     }
