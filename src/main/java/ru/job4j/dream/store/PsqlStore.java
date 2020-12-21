@@ -23,22 +23,23 @@ public class PsqlStore implements Store {
 
     private PsqlStore() {
         Properties cfg = new Properties();
-        try (BufferedReader io = new BufferedReader(new FileReader("db.properties"))) {
+        try (BufferedReader io = new BufferedReader(
+                new FileReader("src/main/resources/db/db.properties"))) {
             cfg.load(io);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new IllegalStateException(e);
         }
         try {
-            Class.forName(cfg.getProperty("jdbc.driver"));
+            Class.forName(cfg.getProperty("driver"));
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getMessage(), e);
             throw new IllegalStateException(e);
         }
-        pool.setDriverClassName(cfg.getProperty("jdbc.driver"));
-        pool.setUrl(cfg.getProperty("jdbc.url"));
-        pool.setUsername(cfg.getProperty("jdbc.username"));
-        pool.setPassword(cfg.getProperty("jdbc.password"));
+        pool.setDriverClassName(cfg.getProperty("driver"));
+        pool.setUrl(cfg.getProperty("url"));
+        pool.setUsername(cfg.getProperty("username"));
+        pool.setPassword(cfg.getProperty("password"));
         pool.setMinIdle(5);
         pool.setMaxIdle(10);
         pool.setMaxOpenPreparedStatements(100);
