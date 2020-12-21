@@ -1,18 +1,23 @@
 package ru.job4j.dream.servlet;
 
-import ru.job4j.dream.store.MemStore;
+import ru.job4j.dream.model.Post;
+import ru.job4j.dream.store.PsqlStore;
+import ru.job4j.dream.store.Store;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class PostServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("posts", MemStore.instOf().findAllPosts());
-        req.setAttribute("size_posts", MemStore.instOf().getSizePosts());
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        Store store = PsqlStore.instOf();
+        req.setAttribute("posts", store.findAllPosts());
         req.getRequestDispatcher("posts.jsp").forward(req, resp);
     }
 
@@ -20,8 +25,11 @@ public class PostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         req.setCharacterEncoding("UTF-8");
-        MemStore.instOf().savePost(req.getParameter("id"), req.getParameter("name"),
-                req.getParameter("description"));
+        int id = Integer.parseInt(req.getParameter("id"));
+        String name = req.getParameter("name");
+        String description = req.getParameter("description");
+        PsqlStore.instOf().save(new Post(id, name, description,
+                LocalDateTime.now(ZoneId.of("UTC"))));
         resp.sendRedirect(req.getContextPath() + "/posts.do");
     }
 }

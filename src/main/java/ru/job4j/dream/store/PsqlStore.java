@@ -8,8 +8,7 @@ import ru.job4j.dream.model.Post;
 
 import javax.sql.rowset.FilteredRowSet;
 import javax.sql.rowset.RowSetProvider;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,8 +22,8 @@ public class PsqlStore implements Store {
 
     private PsqlStore() {
         Properties cfg = new Properties();
-        try (BufferedReader io = new BufferedReader(
-                new FileReader("src/main/resources/db/db.properties"))) {
+        try (InputStream io = PsqlStore.class.getClassLoader()
+                .getResourceAsStream("db.properties")) {
             cfg.load(io);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -228,31 +227,5 @@ public class PsqlStore implements Store {
             LOGGER.error(e.getMessage(), e);
         }
         return candidate;
-    }
-
-    public int getSizePosts() {
-        try (Connection connection = pool.getConnection();
-             Statement statement = connection.createStatement();) {
-            ResultSet resultSet = statement.executeQuery("select count(*) from posts");
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return 0;
-    }
-
-    public int getSizeCandidates() {
-        try (Connection connection = pool.getConnection();
-             Statement statement = connection.createStatement();) {
-            ResultSet resultSet = statement.executeQuery("select count(*) from candidates");
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return 0;
     }
 }

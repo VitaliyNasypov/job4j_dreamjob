@@ -1,7 +1,6 @@
 package ru.job4j.dream.model;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class Post {
@@ -10,8 +9,6 @@ public class Post {
     private final String description;
     private final LocalDateTime created;
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy");
-
-//    LocalDateTime created = LocalDateTime.now(ZoneId.of("UTC+3"));
 
     public Post(int id, String name, String description, LocalDateTime created) {
         this.id = id;

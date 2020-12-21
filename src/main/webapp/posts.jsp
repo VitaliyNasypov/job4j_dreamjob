@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en">
 
@@ -42,7 +43,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Количество вакансий на сайте:
-                            <c:out value="${size_posts}"/>
+                            ${fn:length(posts)}
                         </th>
                     </tr>
                     </thead>
@@ -62,7 +63,7 @@
                                 <c:out value="${post.id}"/></td>
                             <td><c:out value="${post.name}"/></td>
                             <td><c:out value="${post.description}"/></td>
-                            <td><c:out value="${post.createdString}"/></td>
+                            <td><c:out value="${post.createdToString}"/></td>
                         </tr>
                     </c:forEach>
                     </tbody>

@@ -40,9 +40,15 @@ public class Candidate {
 
         Candidate candidate = (Candidate) o;
 
-        if (id != candidate.id) return false;
-        if (age != candidate.age) return false;
-        if (firstName != null ? !firstName.equals(candidate.firstName) : candidate.firstName != null) return false;
+        if (id != candidate.id) {
+            return false;
+        }
+        if (age != candidate.age) {
+            return false;
+        }
+        if (firstName != null ? !firstName.equals(candidate.firstName) : candidate.firstName != null) {
+            return false;
+        }
         return lastName != null ? lastName.equals(candidate.lastName) : candidate.lastName == null;
     }
 

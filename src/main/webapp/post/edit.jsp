@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.store.MemStore" %>
+<%@ page import="ru.job4j.dream.store.PsqlStore" %>
 <%@ page import="ru.job4j.dream.model.Post" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.ZoneId" %>
 <!doctype html>
 <html lang="en">
 
@@ -28,9 +30,9 @@
 
 <body>
 <% String id = request.getParameter("id");
-    Post post = new Post(0, "", "");
+    Post post = new Post(0, "", "", LocalDateTime.now(ZoneId.of("UTC")));
     if (id != null) {
-        post = MemStore.instOf().findByIdPost(Integer.parseInt(id));
+        post = PsqlStore.instOf().findByIdPost(Integer.parseInt(id));
     } %>
 <div class="container pt-3">
     <div class="row">

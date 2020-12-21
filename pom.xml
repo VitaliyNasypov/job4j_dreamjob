@@ -18,7 +18,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <db.propertyFile>src/main/resources/db/db.properties</db.propertyFile>
+                <db.propertyFile>src/main/resources/db/liquibase.properties</db.propertyFile>
             </properties>
         </profile>
     </profiles>

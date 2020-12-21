@@ -1,6 +1,7 @@
 package ru.job4j.dream.servlet;
 
-import ru.job4j.dream.store.MemStore;
+import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.store.PsqlStore;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,9 +11,9 @@ import java.io.IOException;
 
 public class CandidateServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("candidates", MemStore.instOf().findAllCandidates());
-        req.setAttribute("size_candidates", MemStore.instOf().getSizeCandidates());
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        req.setAttribute("candidates", PsqlStore.instOf().findAllCandidates());
         req.getRequestDispatcher("candidates.jsp").forward(req, resp);
     }
 
@@ -20,8 +21,13 @@ public class CandidateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         request.setCharacterEncoding("UTF-8");
-        MemStore.instOf().saveCandidate(request.getParameter("id"), request.getParameter("firstName"),
-                request.getParameter("lastName"), request.getParameter("age"));
+        int id = Integer.parseInt(request.getParameter("id"));
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        int age = request.getParameter("age")
+                .matches("^(?!-|0(?:\\.0*)?$)\\d+(?:\\d+)?$") ?
+                Integer.parseInt(request.getParameter("age")) : 0;
+        PsqlStore.instOf().save(new Candidate(id, firstName, lastName, age));
         response.sendRedirect(request.getContextPath() + "/candidates.do");
     }
 }

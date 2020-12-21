@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.store.MemStore" %>
+<%@ page import="ru.job4j.dream.store.PsqlStore" %>
 <%@ page import="ru.job4j.dream.model.Candidate" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.ZoneId" %>
 <!doctype html>
 <html lang="en">
 
@@ -32,7 +34,7 @@
 <% String id = request.getParameter("id");
     Candidate candidate = new Candidate(0, "", "", 0);
     if (id != null) {
-        candidate = MemStore.instOf().findByIdCandidate(Integer.parseInt(id));
+        candidate = PsqlStore.instOf().findByIdCandidate(Integer.parseInt(id));
     } %>
 <div class="container pt-3">
     <div class="row">
