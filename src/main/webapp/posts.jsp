@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en">
 
@@ -32,8 +32,7 @@
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/index.do">Вернутся на
-                    главную</a>
+                <a class="nav-link" href="<c:url value='/index.do'/>">Вернутся на главную</a>
             </li>
         </ul>
         <div class="card" style="width: 100%">
@@ -42,9 +41,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Количество вакансий на сайте:
-                            ${fn:length(posts)}
-                        </th>
+                        <th scope="col">Количество вакансий на сайте: ${fn:length(posts)} </th>
                     </tr>
                     </thead>
                     <thead>

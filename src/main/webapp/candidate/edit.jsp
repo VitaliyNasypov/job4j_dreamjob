@@ -1,8 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="ru.job4j.dream.store.PsqlStore" %>
 <%@ page import="ru.job4j.dream.model.Candidate" %>
-<%@ page import="java.time.LocalDateTime" %>
-<%@ page import="java.time.ZoneId" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
 
@@ -33,44 +32,75 @@
 <body>
 <% String id = request.getParameter("id");
     Candidate candidate = new Candidate(0, "", "", 0);
-    if (id != null) {
+    if (Integer.parseInt(request.getParameter("id")) > 0) {
         candidate = PsqlStore.instOf().findByIdCandidate(Integer.parseInt(id));
-    } %>
+    }
+    if (!(request.getAttribute("imageFile") == null)) {
+        candidate.setIdPhoto((String) request.getAttribute("imageFile"));
+    }
+    request.setAttribute("Candidate", candidate);
+%>
 <div class="container pt-3">
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">Вернутся на
-                    главную</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">Вернутся на главную</a>
             </li>
         </ul>
         <div class="card" style="width: 100%">
             <div class="card-header">
-                <% if (id == null) { %>
-                Добавить нового кандидата
-                <% } else { %>
-                Редактирование кандидата
-                <% } %>
+                <c:choose>
+                    <c:when test="${Candidate.id == 0}"> Добавить нового кандидата </c:when>
+                    <c:when test="${Candidate.id > 0}"> Редактирование кандидата </c:when>
+                </c:choose>
             </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <td><img height="30%"
+                             src="<c:url value='/download?image=${Candidate.idPhoto}'/>"/>
+                        <br> <br>
+                        <c:if test="${Candidate.id > 0}">
+                            <a href="<c:url value='/download?image=${Candidate.idPhoto}'/>">Download photo</a>
+                        </c:if>
+                    </td>
+                    <td><h2>Upload image</h2><br>
+                        <h6>Only image format. <br>File size not more than 1MB.</h6>
+                        <form action="<c:url value='/upload?id=${Candidate.id}'/>" method="post"
+                              enctype="multipart/form-data">
+                            <div class="checkbox">
+                                <input type="file" name="file">
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Add photo</button>
+                        </form>
+                    </td>
+                </tr>
+                </thead>
+            </table>
             <div class="card-body">
-                <form
-                        action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>"
-                        method="post">
+                <form action=" <c:url value='/candidates.do?id=${Candidate.id}&image=${Candidate.idPhoto}'/>"
+                      method="post">
                     <div class="form-group">
                         <label>Имя</label>
                         <input type="text" class="form-control" name="firstName"
-                               value="<%=candidate.getFirstName()%>">
+                               value="<c:out value="${Candidate.firstName}"/>">
                     </div>
                     <div class="form-group">
                         <label>Фамилия</label>
                         <input type="text" class="form-control" name="lastName"
-                               value="<%=candidate.getLastName()%>">
+                               value="<c:out value="${Candidate.lastName}"/>">
                     </div>
                     <div class="form-group">
                         <label>Возраст</label>
-                        <input type="text" class="form-control" name="age"
-                               value="<%=String.valueOf(candidate.getAge()).replaceFirst(
-                                                "[0]?\\b","")%>">
+                        <c:choose>
+                            <c:when test="${Candidate.id == 0}">
+                                <input type="number" class="form-control" name="age" align="left"
+                                       value=""></c:when>
+                            <c:when test="${Candidate.id > 0}">
+                                <input type="number" class="form-control" name="age" align="left"
+                                       value="<c:out value="${Candidate.age}"/>"></c:when>
+                        </c:choose>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

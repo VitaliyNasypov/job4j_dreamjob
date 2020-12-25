@@ -54,7 +54,8 @@ public class Post {
         if (name != null ? !name.equals(post.name) : post.name != null) {
             return false;
         }
-        if (description != null ? !description.equals(post.description) : post.description != null) {
+        if (description != null ? !description.equals(post.description)
+                : post.description != null) {
             return false;
         }
         return created != null ? created.equals(post.created) : post.created == null;

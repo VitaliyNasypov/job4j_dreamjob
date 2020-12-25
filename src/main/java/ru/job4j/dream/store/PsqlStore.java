@@ -8,7 +8,11 @@ import ru.job4j.dream.model.Post;
 
 import javax.sql.rowset.FilteredRowSet;
 import javax.sql.rowset.RowSetProvider;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -86,10 +90,12 @@ public class PsqlStore implements Store {
                 filteredRowSet.populate(resultSet);
             }
             while (filteredRowSet.next()) {
-                candidates.add(new Candidate(filteredRowSet.getInt("id"),
+                Candidate candidate = new Candidate(filteredRowSet.getInt("id"),
                         filteredRowSet.getString("firstName"),
                         filteredRowSet.getString("lastName"),
-                        filteredRowSet.getInt("age")));
+                        filteredRowSet.getInt("age"));
+                candidate.setIdPhoto(filteredRowSet.getString("ID_PHOTO"));
+                candidates.add(candidate);
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
@@ -162,6 +168,7 @@ public class PsqlStore implements Store {
                     candidate.setId(id.getInt(1));
                 }
             }
+            updatePhoto(candidate);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -178,8 +185,30 @@ public class PsqlStore implements Store {
             preparedStatement.setString(2, candidate.getLastName());
             preparedStatement.setInt(3, candidate.getAge());
             preparedStatement.execute();
+            updatePhoto(candidate);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    private void updatePhoto(Candidate candidate) {
+        if (!candidate.getIdPhoto().isEmpty() || candidate.getIdPhoto() != null) {
+            Path oldFileName = Path.of(File.separator + "bin" + File.separator
+                    + "images" + File.separator + "photo_id" + File.separator + candidate.getIdPhoto());
+            candidate.setIdPhoto(candidate.getId() + "_" + candidate.getIdPhoto().split("_", 2)[1]);
+            Path newFileName = Path.of(File.separator + "bin" + File.separator
+                    + "images" + File.separator + "photo_id" + File.separator
+                    + candidate.getIdPhoto());
+            try (Connection connection = pool.getConnection();
+                 PreparedStatement preparedStatement = connection
+                         .prepareStatement("UPDATE candidates SET ID_PHOTO = ? WHERE id=?")) {
+                Files.move(oldFileName, newFileName);
+                preparedStatement.setInt(2, candidate.getId());
+                preparedStatement.setString(1, candidate.getIdPhoto());
+                preparedStatement.execute();
+            } catch (IOException | SQLException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
         }
     }
 

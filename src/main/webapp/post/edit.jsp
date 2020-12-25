@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="ru.job4j.dream.store.PsqlStore" %>
 <%@ page import="ru.job4j.dream.model.Post" %>
 <%@ page import="java.time.LocalDateTime" %>
@@ -33,13 +34,14 @@
     Post post = new Post(0, "", "", LocalDateTime.now(ZoneId.of("UTC")));
     if (id != null) {
         post = PsqlStore.instOf().findByIdPost(Integer.parseInt(id));
-    } %>
+    }
+    request.setAttribute("Post", post);
+%>
 <div class="container pt-3">
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">Вернутся на
-                    главную</a>
+                <a class="nav-link" href="<c:url value='/index.do'/>">Вернутся на главную</a>
             </li>
         </ul>
         <div class="card" style="width: 100%">
@@ -51,19 +53,22 @@
                 <% } %>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>"
-                      method="post">
+                <form action="<c:url value='/posts.do?id=${Post.id}'/>" method="post">
                     <div class="form-group">
                         <label>Имя</label>
                         <input type="text" class="form-control" name="name"
-                               value="<%=post.getName()%>">
+                               value="<c:out value="${Post.name}"/>">
                     </div>
                     <div class="form-group">
                         <label>Описание</label>
                         <input type="text" class="form-control" name="description"
-                               value="<%=post.getDescription()%>">
+                               value="<c:out value="${Post.description}"/>">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

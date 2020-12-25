@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en">
 
@@ -32,8 +32,7 @@
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">
-                    Вернутся на главную</a>
+                <a class="nav-link" href="<c:url value='/index.do'/>">Вернутся на главную</a>
             </li>
         </ul>
         <div class="card" style="width: 100%">
@@ -44,14 +43,13 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Количество кандидатов на сайте:
-                            ${fn:length(candidates)}
-                        </th>
+                        <th scope="col">Количество кандидатов на сайте: ${fn:length(candidates)}  </th>
                     </tr>
                     </thead>
                     <thead>
                     <tr>
                         <th scope="col">ID</th>
+                        <th scope="col">Photo</th>
                         <th scope="col">Имя</th>
                         <th scope="col">Фамилия</th>
                         <th scope="col">Возраст</th>
@@ -63,6 +61,7 @@
                             <td><a href="<c:url value="/candidate/edit.jsp?id=${candidate.id}"/>">
                                 <i class="fa fa-edit mr-3"></i> </a>
                                 <c:out value="${candidate.id}"/></td>
+                            <td><img src="<c:url value='/download?image=${candidate.idPhoto}'/>" height="15%"/></td>
                             <td><c:out value="${candidate.firstName}"/></td>
                             <td><c:out value="${candidate.lastName}"/></td>
                             <td><c:out value="${candidate.age}"/></td>

@@ -5,6 +5,7 @@ public class Candidate {
     private final String firstName;
     private final String lastName;
     private final int age;
+    private String idPhoto;
 
     public Candidate(int id, String firstName, String lastName, int age) {
         this.id = id;
@@ -33,6 +34,14 @@ public class Candidate {
         this.id = id;
     }
 
+    public String getIdPhoto() {
+        return idPhoto;
+    }
+
+    public void setIdPhoto(String idPhoto) {
+        this.idPhoto = idPhoto;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,10 +55,12 @@ public class Candidate {
         if (age != candidate.age) {
             return false;
         }
-        if (firstName != null ? !firstName.equals(candidate.firstName) : candidate.firstName != null) {
+        if (firstName != null ? !firstName.equals(candidate.firstName)
+                : candidate.firstName != null) {
             return false;
         }
-        return lastName != null ? lastName.equals(candidate.lastName) : candidate.lastName == null;
+        return lastName != null ? lastName.equals(candidate.lastName)
+                : candidate.lastName == null;
     }
 
     @Override

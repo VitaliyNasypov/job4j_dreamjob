@@ -24,10 +24,12 @@ public class CandidateServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
-        int age = request.getParameter("age")
-                .matches("^(?!-|0(?:\\.0*)?$)\\d+(?:\\d+)?$") ?
-                Integer.parseInt(request.getParameter("age")) : 0;
-        PsqlStore.instOf().save(new Candidate(id, firstName, lastName, age));
+        int age = Integer.parseInt(request.getParameter("age"));
+        Candidate candidate = new Candidate(id, firstName, lastName, age);
+        if (!request.getParameter("image").isEmpty()){
+            candidate.setIdPhoto(request.getParameter("image"));
+        }
+        PsqlStore.instOf().save(candidate);
         response.sendRedirect(request.getContextPath() + "/candidates.do");
     }
 }
