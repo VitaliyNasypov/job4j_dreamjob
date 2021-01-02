@@ -35,7 +35,7 @@
     if (Integer.parseInt(request.getParameter("id")) > 0) {
         candidate = PsqlStore.instOf().findByIdCandidate(Integer.parseInt(id));
     }
-    if (!(request.getAttribute("imageFile") == null)) {
+    if (request.getAttribute("imageFile") != null) {
         candidate.setIdPhoto((String) request.getAttribute("imageFile"));
     }
     request.setAttribute("Candidate", candidate);
@@ -79,8 +79,12 @@
                 </thead>
             </table>
             <div class="card-body">
-                <form action=" <c:url value='/candidates.do?id=${Candidate.id}&image=${Candidate.idPhoto}'/>"
+                <form action=" <c:url value='/candidates.do'/>"
                       method="post">
+                    <input type="hidden" class="form-control" name="imageId"
+                           value="<c:out value="${Candidate.idPhoto}"/>">
+                    <input type="hidden" class="form-control" name="id"
+                           value="<c:out value="${Candidate.id}"/>">
                     <div class="form-group">
                         <label>Имя</label>
                         <input type="text" class="form-control" name="firstName"

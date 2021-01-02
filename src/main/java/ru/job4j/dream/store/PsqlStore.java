@@ -112,7 +112,7 @@ public class PsqlStore implements Store {
         }
     }
 
-    private Post create(Post post) {
+    private void create(Post post) {
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection
                      .prepareStatement("INSERT INTO posts(name, description, created) VALUES (?,?,?)",
@@ -129,7 +129,6 @@ public class PsqlStore implements Store {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return post;
     }
 
     private void update(Post post) {
@@ -154,7 +153,7 @@ public class PsqlStore implements Store {
         }
     }
 
-    private Candidate create(Candidate candidate) {
+    private void create(Candidate candidate) {
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection
                      .prepareStatement("INSERT INTO candidates(firstName, lastName, age) VALUES (?,?,?)",
@@ -172,7 +171,6 @@ public class PsqlStore implements Store {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return candidate;
     }
 
     private void update(Candidate candidate) {
@@ -192,7 +190,7 @@ public class PsqlStore implements Store {
     }
 
     private void updatePhoto(Candidate candidate) {
-        if (!candidate.getIdPhoto().isEmpty() || candidate.getIdPhoto() != null) {
+        if (candidate.getIdPhoto() != null) {
             Path oldFileName = Path.of(File.separator + "bin" + File.separator
                     + "images" + File.separator + "photo_id" + File.separator + candidate.getIdPhoto());
             candidate.setIdPhoto(candidate.getId() + "_" + candidate.getIdPhoto().split("_", 2)[1]);
@@ -251,6 +249,7 @@ public class PsqlStore implements Store {
                         filteredRowSet.getString("firstName"),
                         filteredRowSet.getString("lastName"),
                         filteredRowSet.getInt("age"));
+                candidate.setIdPhoto(filteredRowSet.getString("id_photo"));
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
