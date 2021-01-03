@@ -41,6 +41,11 @@
                         <label>Пароль</label>
                         <input type="text" class="form-control" name="password">
                     </div>
+                    <c:if test="${error != null}">
+                        <p><span style="color: #ff0000;">
+                            <c:out value="${error}"/>
+                        </span></p>
+                    </c:if>
                     <button type="submit" class="btn btn-primary">Войти</button>
                     <a href="<c:url value='/index.do'/>" class="btn btn-primary">Вернутся на главную</a>
                 </form>

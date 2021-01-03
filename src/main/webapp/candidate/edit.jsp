@@ -46,6 +46,14 @@
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/index.jsp">Вернутся на главную</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<c:url value='/login.jsp'/>">
+                    <c:choose>
+                        <c:when test="${user != null}"><c:out value="${user.name}"/> | Выйти</c:when>
+                        <c:when test="${user == null}"> Войти </c:when>
+                    </c:choose>
+                </a>
+            </li>
         </ul>
         <div class="card" style="width: 100%">
             <div class="card-header">
