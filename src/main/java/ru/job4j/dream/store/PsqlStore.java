@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
+import ru.job4j.dream.model.User;
 
 import javax.sql.rowset.FilteredRowSet;
 import javax.sql.rowset.RowSetProvider;
@@ -104,22 +105,23 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public void save(Post post) {
+    public void save(Post post, User user) {
         if (post.getId() == 0) {
-            create(post);
+            create(post, user);
         } else {
             update(post);
         }
     }
 
-    private void create(Post post) {
+    private void create(Post post, User user) {
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection
-                     .prepareStatement("INSERT INTO posts(name, description, created) VALUES (?,?,?)",
+                     .prepareStatement("INSERT INTO posts(name, description, created,user_email) VALUES (?,?,?,?)",
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, post.getName());
             preparedStatement.setString(2, post.getDescription());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(post.getCreated()));
+            preparedStatement.setString(4, user.getEmail());
             preparedStatement.execute();
             try (ResultSet id = preparedStatement.getGeneratedKeys()) {
                 if (id.next()) {
@@ -145,22 +147,23 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public void save(Candidate candidate) {
+    public void save(Candidate candidate, User user) {
         if (candidate.getId() == 0) {
-            create(candidate);
+            create(candidate, user);
         } else {
             update(candidate);
         }
     }
 
-    private void create(Candidate candidate) {
+    private void create(Candidate candidate, User user) {
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection
-                     .prepareStatement("INSERT INTO candidates(firstName, lastName, age) VALUES (?,?,?)",
+                     .prepareStatement("INSERT INTO candidates(firstName, lastName, age,user_email) VALUES (?,?,?,?)",
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, candidate.getFirstName());
             preparedStatement.setString(2, candidate.getLastName());
             preparedStatement.setInt(3, candidate.getAge());
+            preparedStatement.setString(4, user.getEmail());
             preparedStatement.execute();
             try (ResultSet id = preparedStatement.getGeneratedKeys()) {
                 if (id.next()) {
@@ -177,7 +180,7 @@ public class PsqlStore implements Store {
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection
                      .prepareStatement("UPDATE candidates SET firstName = ?, "
-                             + "lastName = ?, age = ? WHERE id=?")) {
+                             + "lastName = ?, age = ?, user_email = ? WHERE id=?")) {
             preparedStatement.setInt(4, candidate.getId());
             preparedStatement.setString(1, candidate.getFirstName());
             preparedStatement.setString(2, candidate.getLastName());
@@ -255,5 +258,31 @@ public class PsqlStore implements Store {
             LOGGER.error(e.getMessage(), e);
         }
         return candidate;
+    }
+
+    @Override
+    public User findByUser(String email, String password) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        try (Connection connection = pool.getConnection();
+             FilteredRowSet filteredRowSet = RowSetProvider.newFactory().createFilteredRowSet();
+             PreparedStatement preparedStatement = connection
+                     .prepareStatement("select * from users where email = ?")) {
+            preparedStatement.setString(1, user.getEmail());
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                filteredRowSet.populate(resultSet);
+            }
+            if (filteredRowSet.next()) {
+                if (new PasswordHash().validatePassword(password, filteredRowSet.getString("password"))) {
+                    user.setId(filteredRowSet.getInt("id"));
+                    user.setName(filteredRowSet.getString("name"));
+                    user.setGroup(filteredRowSet.getString("group_user"));
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return user;
     }
 }

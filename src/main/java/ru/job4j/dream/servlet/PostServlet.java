@@ -1,6 +1,7 @@
 package ru.job4j.dream.servlet;
 
 import ru.job4j.dream.model.Post;
+import ru.job4j.dream.model.User;
 import ru.job4j.dream.store.PsqlStore;
 import ru.job4j.dream.store.Store;
 
@@ -29,7 +30,7 @@ public class PostServlet extends HttpServlet {
         String name = req.getParameter("name");
         String description = req.getParameter("description");
         PsqlStore.instOf().save(new Post(id, name, description,
-                LocalDateTime.now(ZoneId.of("UTC"))));
+                LocalDateTime.now(ZoneId.of("UTC"))), (User) req.getSession().getAttribute("user"));
         resp.sendRedirect(req.getContextPath() + "/posts.do");
     }
 }

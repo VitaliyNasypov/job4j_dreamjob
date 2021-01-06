@@ -1,6 +1,7 @@
 package ru.job4j.dream.servlet;
 
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.User;
 import ru.job4j.dream.store.PsqlStore;
 
 import javax.servlet.ServletException;
@@ -26,10 +27,10 @@ public class CandidateServlet extends HttpServlet {
         String lastName = request.getParameter("lastName");
         int age = Integer.parseInt(request.getParameter("age"));
         Candidate candidate = new Candidate(id, firstName, lastName, age);
-        if (!request.getParameter("imageId").isEmpty()){
+        if (!request.getParameter("imageId").isEmpty()) {
             candidate.setIdPhoto(request.getParameter("imageId"));
         }
-        PsqlStore.instOf().save(candidate);
+        PsqlStore.instOf().save(candidate, (User) request.getSession().getAttribute("user"));
         response.sendRedirect(request.getContextPath() + "/candidates.do");
     }
 }

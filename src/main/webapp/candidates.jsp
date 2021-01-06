@@ -35,12 +35,13 @@
                 <a class="nav-link" href="<c:url value='/index.do'/>">Вернутся на главную</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value='/login.jsp'/>">
-                    <c:choose>
-                        <c:when test="${user != null}"><c:out value="${user.name}"/> | Выйти</c:when>
-                        <c:when test="${user == null}"> Войти </c:when>
-                    </c:choose>
-                </a>
+                <c:choose>
+                    <c:when test="${user != null}"><a class="nav-link"
+                                                      href="<c:url value='/index.do?out=${true}'/>"><c:out
+                            value="${user.name}"/> | Выйти</a></c:when>
+                    <c:when test="${user == null}"><a class="nav-link" href="<c:url value='/login.jsp'/>">Войти</a>
+                    </c:when>
+                </c:choose>
             </li>
         </ul>
         <div class="card" style="width: 100%">

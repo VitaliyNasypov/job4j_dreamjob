@@ -22,7 +22,7 @@ public class DownloadServlet extends HttpServlet {
                 ? NO_PHOTO_ID.toString()
                 : req.getParameter("image");
         Path fileName = Path.of(CANDIDATE_DIR + File.separator + fileImageId);
-        resp.setContentType("image/"+fileImageId.split("\\.")[1]);
+        resp.setContentType("image/" + fileImageId.split("\\.")[1]);
         resp.setHeader("Content-Disposition", "attachment; filename=\""
                 + fileName.toString() + "\"");
         resp.getOutputStream().write(Files.readAllBytes(fileName));
