@@ -26,26 +26,30 @@
 <div class="container pt-3">
     <div class="row">
         <div class="card" style="width: 100%">
-            <div class="card-header">
-                Авторизация
-            </div>
+            <div class="card-header">Регистрация</div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/auth.do" method="post">
+                <form action="<%=request.getContextPath()%>/reg.do" method="post">
                     <div class="form-group">
-                        <label>Почта</label>
-                        <input type="text" class="form-control" name="email">
+                        <label>Имя</label>
+                        <input type="text" class="form-control" name="name">
                     </div>
                     <div class="form-group">
-                        <label>Пароль</label>
-                        <input type="text" class="form-control" name="password">
+                        <label>E-mail</label>
+                        <input type="email" class="form-control" name="email">
                     </div>
                     <c:if test="${error != null}">
                         <p><span style="color: #ff0000;">
                             <c:out value="${error}"/>
                         </span></p>
                     </c:if>
-                    <button type="submit" class="btn btn-primary">Войти</button>
-                    <a href="<c:url value='/reg.jsp'/>" class="btn btn-primary">Регистрация</a>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" class="form-control" name="password">
+                    </div>
+                    <p><input type="radio" name="group" value="hr"> HR-менеджер<br>
+                        <input type="radio" name="group" value="candidate" checked> Соискатель</p>
+                    <a href="<c:url value='/login.jsp'/>" class="btn btn-primary">Войти</a>
+                    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
                     <a href="<c:url value='/'/>" class="btn btn-primary">Вернутся на главную</a>
                 </form>
             </div>

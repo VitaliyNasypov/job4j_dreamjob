@@ -285,4 +285,27 @@ public class PsqlStore implements Store {
         }
         return user;
     }
+
+    @Override
+    public void save(User user) {
+        try (Connection connection = pool.getConnection();
+             PreparedStatement preparedStatement = connection
+                     .prepareStatement("INSERT INTO users(name, email, password, group_user) VALUES (?,?,?,?)",
+                             PreparedStatement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getEmail());
+            user.setPassword(new PasswordHash().generatePasswordHash(user.getPassword(),
+                    user.getEmail(), 10000, 512, "PBKDF2WithHmacSHA512"));
+            preparedStatement.setString(3, user.getPassword());
+            preparedStatement.setString(4, user.getGroup());
+            preparedStatement.execute();
+            try (ResultSet id = preparedStatement.getGeneratedKeys()) {
+                if (id.next()) {
+                    user.setId(id.getInt(1));
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
 }

@@ -20,4 +20,6 @@ public interface Store {
     Candidate findByIdCandidate(int id);
 
     User findByUser(String email, String password);
+
+    void save(User user);
 }

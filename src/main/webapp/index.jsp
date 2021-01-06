@@ -34,12 +34,14 @@
             <li class="nav-item">
                 <a class="nav-link" href="<c:url value='/candidates.do'/>">Кандидаты</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<c:url value='/post/edit.jsp'/>">Добавить вакансию</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<c:url value='/candidate/edit.jsp?id=${0}'/>">Добавить кадидата</a>
-            </li>
+            <c:if test="${user != null}">
+                <li class="nav-item">
+                    <a class="nav-link" href="<c:url value='/post/edit.jsp'/>">Добавить вакансию</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<c:url value='/candidate/edit.jsp?id=${0}'/>">Добавить кадидата</a>
+                </li>
+            </c:if>
             <li class="nav-item">
                 <c:choose>
                     <c:when test="${user != null}"><a class="nav-link"
@@ -48,6 +50,11 @@
                     <c:when test="${user == null}"><a class="nav-link" href="<c:url value='/login.jsp'/>">Войти</a>
                     </c:when>
                 </c:choose>
+            </li>
+            <li class="nav-item">
+                <c:if test="${user == null}">
+                    <a class="nav-link" href="<c:url value='/reg.jsp'/>">Регистрация</a>
+                </c:if>
             </li>
         </ul>
     </div>
