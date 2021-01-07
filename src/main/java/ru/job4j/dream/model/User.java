@@ -1,18 +1,8 @@
 package ru.job4j.dream.model;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import ru.job4j.dream.store.PsqlStore;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
 import java.util.Objects;
 
 public class User {
-    private static final Logger LOGGER = LoggerFactory.getLogger(User.class.getName());
     private int id;
     private String name;
     private String email;

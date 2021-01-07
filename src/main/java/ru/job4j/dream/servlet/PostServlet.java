@@ -3,7 +3,6 @@ package ru.job4j.dream.servlet;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.User;
 import ru.job4j.dream.store.PsqlStore;
-import ru.job4j.dream.store.Store;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
