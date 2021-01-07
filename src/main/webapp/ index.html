@@ -15,12 +15,27 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
+    <script>
+        function validate() {
+            let name = $('#name').val();
+            let surname = $('#surname').val();
+            let sex = $('#sex').val();
+            let description = $('#description').val();
+            let outAlert = '';
+            if (name === '') outAlert += 'Заполните поле - Имя\n';
+            if (surname === '') outAlert += 'Заполните поле - Фамилия\n';
+            if (sex === '') outAlert += 'Заполните поле - Пол\n';
+            if (description === '') outAlert += 'Заполните поле - Описание';
+            if (outAlert !== '') alert(outAlert)
+            return false;
+        }
+    </script>
 </head>
 <body>
 <div class="container pt-3">
     <div class="card-header"><strong>Регистрация</strong></div>
     <div class="card-body">
-        <form action="/index.html" method="POST">
+        <form>
             <div class="form-group">
                 <label for="name"><strong>Имя:</strong></label>
                 <input type="text" class="form-control" id="name">
@@ -31,14 +46,14 @@
             </div>
             <div class="radio">
                 <label><strong>Пол</strong><br>
-                    <input type="radio" name="group" value="male" checked> Мужчина<br>
-                    <input type="radio" name="group" value="female"> Женщина<br></label>
+                    <input type="radio" name="sex" value="male" checked> Мужчина<br>
+                    <input type="radio" name="sex" value="female"> Женщина<br></label>
             </div>
             <div class="form-group">
-                <label for="surname"><strong>Описание:</strong></label><br>
-                <textarea rows="5%" cols="90%" name="description"></textarea>
+                <label for="description"><strong>Описание:</strong></label><br>
+                <textarea rows="5%" cols="90%" name="description" id="description"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" onclick="return validate();">Submit</button>
         </form>
     </div>
 </div>
