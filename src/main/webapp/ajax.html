@@ -11,20 +11,20 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <script>
-    function sendGreeting() {
-        $.ajax({
-            type: 'GET',
-            url: 'http://localhost:8080/job4j_dreamjob/greet',
-            data: 'name=' + $('#exampleInputEmail1').val(),
-            dataType: 'text'
-        }).done(function (data) {
-            let message = 'Текст принятого сообщения: ' + data;
-            document.getElementById("out").innerHTML = message;
-        }).fail(function (err) {
-            let message = 'Ошибка: ' + err;
-            document.getElementById("out").innerHTML = message;
+    $(function() {
+        $("button").click(function() {
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:8080/job4j_dreamjob/greet',
+                data: JSON.stringify({text: $('#exampleInputEmail1').val()}),
+                dataType: 'json'
+            }).done(function(data) {
+                document.getElementById("out").innerHTML = 'JSON. Текст принятого сообщения: ' + data.text;
+            }).fail(function(err) {
+                document.getElementById("out").innerHTML = 'JSON. Ошибка: ' + err;
+            });
         });
-    }
+    });
 </script>
 
 <div class="container">
@@ -35,7 +35,7 @@
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                    placeholder="Enter email">
         </div>
-        <button type="button" class="btn btn-primary" onclick="sendGreeting()">Submit</button>
+        <button type="button" class="btn btn-primary">Submit</button>
     </form>
 </div>
 </body>
