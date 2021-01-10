@@ -1,11 +1,15 @@
 # Travis CI будет использовать язык java.
 language: java
 install: true
-script:
-- mvn install
 
 # Версия JDK для сборки проекта
 jdk: oraclejdk11
+
+services:
+  - postgresql
+
+before_install:
+  - psql -c 'create database dreamjob;' -U postgres
 
 # Режим обычного пользователя для сборки проекта.
 sudo: false
