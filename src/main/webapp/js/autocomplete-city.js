@@ -4,6 +4,5 @@ $(function () {
         delay: 500,
         autoFill: true,
         minLength: 1,
-        // maxItemsToShow: 10
     });
 });
