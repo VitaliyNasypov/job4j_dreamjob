@@ -22,4 +22,8 @@
     <changeSet id="6" author="developer">
         <tagDatabase tag="v.3.0"/>
     </changeSet>
+    <include file="v-4.0/changelog-v.4.0.xml" relativeToChangelogFile="true"/>
+    <changeSet id="10" author="developer">
+        <tagDatabase tag="v.4.0"/>
+    </changeSet>
 </databaseChangeLog>

@@ -7,6 +7,7 @@ import ru.job4j.dream.model.User;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -99,5 +100,10 @@ public class FakeMockStore implements Store {
             }
         }
         return user;
+    }
+
+    @Override
+    public List<String> findByCity(String findCity) {
+        return null;
     }
 }

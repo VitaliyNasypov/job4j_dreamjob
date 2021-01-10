@@ -148,6 +148,7 @@ public class PsqlStore implements Store {
 
     @Override
     public void save(Candidate candidate, User user) {
+        candidate.setCityId(getIdCity(candidate));
         if (candidate.getId() == 0) {
             create(candidate, user);
         } else {
@@ -155,15 +156,34 @@ public class PsqlStore implements Store {
         }
     }
 
+    private int getIdCity(Candidate candidate) {
+        try (Connection connection = pool.getConnection();
+             FilteredRowSet filteredRowSet = RowSetProvider.newFactory().createFilteredRowSet();
+             PreparedStatement preparedStatement = connection
+                     .prepareStatement("select * from CITIES where city = ?")) {
+            preparedStatement.setString(1, candidate.getCity());
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                filteredRowSet.populate(resultSet);
+            }
+            if (filteredRowSet.next()) {
+                return filteredRowSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return 0;
+    }
+
     private void create(Candidate candidate, User user) {
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection
-                     .prepareStatement("INSERT INTO candidates(firstName, lastName, age,user_email) VALUES (?,?,?,?)",
+                     .prepareStatement("INSERT INTO candidates(firstName, lastName, age, user_email, city_id) VALUES (?,?,?,?,?)",
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, candidate.getFirstName());
             preparedStatement.setString(2, candidate.getLastName());
             preparedStatement.setInt(3, candidate.getAge());
             preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setInt(5, candidate.getCityId());
             preparedStatement.execute();
             try (ResultSet id = preparedStatement.getGeneratedKeys()) {
                 if (id.next()) {
@@ -180,11 +200,12 @@ public class PsqlStore implements Store {
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection
                      .prepareStatement("UPDATE candidates SET firstName = ?, "
-                             + "lastName = ?, age = ?, user_email = ? WHERE id=?")) {
-            preparedStatement.setInt(4, candidate.getId());
+                             + "lastName = ?, age = ?, user_email = ?, city_id = ? WHERE id=?")) {
+            preparedStatement.setInt(5, candidate.getId());
             preparedStatement.setString(1, candidate.getFirstName());
             preparedStatement.setString(2, candidate.getLastName());
             preparedStatement.setInt(3, candidate.getAge());
+            preparedStatement.setInt(4, candidate.getCityId());
             preparedStatement.execute();
             updatePhoto(candidate);
         } catch (SQLException e) {
@@ -264,7 +285,6 @@ public class PsqlStore implements Store {
     public User findByUser(String email, String password) {
         User user = new User();
         user.setEmail(email);
-        user.setPassword(password);
         try (Connection connection = pool.getConnection();
              FilteredRowSet filteredRowSet = RowSetProvider.newFactory().createFilteredRowSet();
              PreparedStatement preparedStatement = connection
@@ -307,5 +327,24 @@ public class PsqlStore implements Store {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public List<String> findByCity(String findCity) {
+        String sql = "select (city) from CITIES WHERE city LIKE '" + findCity + "%'";
+        List<String> city = new ArrayList<>();
+        try (Connection connection = pool.getConnection();
+             FilteredRowSet filteredRowSet = RowSetProvider.newFactory().createFilteredRowSet();
+             Statement statement = connection.createStatement()) {
+            try (ResultSet resultSet = statement.executeQuery(sql)) {
+                filteredRowSet.populate(resultSet);
+            }
+            while (filteredRowSet.next()) {
+                city.add(filteredRowSet.getString("city"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return city;
     }
 }

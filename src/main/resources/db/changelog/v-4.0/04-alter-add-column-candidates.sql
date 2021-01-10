@@ -1,0 +1,2 @@
+ALTER TABLE candidates
+    ADD city_id INTEGER REFERENCES CITIES (id);

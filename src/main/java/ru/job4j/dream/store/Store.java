@@ -5,6 +5,7 @@ import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.User;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface Store {
     Collection<Post> findAllPosts();
@@ -22,4 +23,6 @@ public interface Store {
     User findByUser(String email, String password);
 
     void save(User user);
+
+    List<String> findByCity(String findCity);
 }

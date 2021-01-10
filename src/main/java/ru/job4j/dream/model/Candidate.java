@@ -6,12 +6,22 @@ public class Candidate {
     private final String lastName;
     private final int age;
     private String idPhoto;
+    private int cityId;
+    private String city;
 
     public Candidate(int id, String firstName, String lastName, int age) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public int getId() {
@@ -40,6 +50,14 @@ public class Candidate {
 
     public void setIdPhoto(String idPhoto) {
         this.idPhoto = idPhoto;
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 
     @Override

@@ -19,7 +19,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
-
+    <script src="../js/validate.js"></script>
     <title>Работа мечты</title>
 </head>
 <body>
@@ -30,21 +30,23 @@
                 Авторизация
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/auth.do" method="post">
+                <form id="login" action="<%=request.getContextPath()%>/auth.do" method="post">
                     <div class="form-group">
-                        <label>Почта</label>
-                        <input type="text" class="form-control" name="email">
+                        <label for="email">Почта</label>
+                        <input type="text" class="form-control" name="email" id="email">
+                        <span id="resultCheckEmail" style="color: #ff0000;"></span>
                     </div>
                     <div class="form-group">
-                        <label>Пароль</label>
-                        <input type="text" class="form-control" name="password">
+                        <label for="password">Пароль</label>
+                        <input type="password" class="form-control" name="password" id="password">
+                        <span id="resultCheckPassword" style="color: #ff0000;"></span>
                     </div>
                     <c:if test="${error != null}">
                         <p><span style="color: #ff0000;">
                             <c:out value="${error}"/>
                         </span></p>
                     </c:if>
-                    <button type="submit" class="btn btn-primary">Войти</button>
+                    <button type="submit" class="btn btn-primary" onclick="return validateLogin()">Войти</button>
                     <a href="<c:url value='/reg.jsp'/>" class="btn btn-primary">Регистрация</a>
                     <a href="<c:url value='/'/>" class="btn btn-primary">Вернутся на главную</a>
                 </form>

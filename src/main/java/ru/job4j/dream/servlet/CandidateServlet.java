@@ -25,11 +25,13 @@ public class CandidateServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
+        String city = request.getParameter("city");
         int age = Integer.parseInt(request.getParameter("age"));
         Candidate candidate = new Candidate(id, firstName, lastName, age);
         if (!request.getParameter("imageId").isEmpty()) {
             candidate.setIdPhoto(request.getParameter("imageId"));
         }
+        candidate.setCity(city);
         PsqlStore.instOf().save(candidate, (User) request.getSession().getAttribute("user"));
         response.sendRedirect(request.getContextPath() + "/candidates.do");
     }

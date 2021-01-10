@@ -25,7 +25,11 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Работа мечты</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="../js/autocomplete-city.js"></script>
+    <script src="../js/validate.js"></script>
     <title>Работа мечты</title>
 </head>
 
@@ -72,16 +76,18 @@
                         <c:if test="${Candidate.id > 0}">
                             <a href="<c:url value='/download?image=${Candidate.idPhoto}'/>">Download photo</a>
                         </c:if>
+                        <span id="resultCheckPhoto" style="color: #ff0000;"></span>
                     </td>
                     <td><h2>Upload image</h2><br>
                         <h6>Only image format. <br>File size not more than 1MB.</h6>
                         <form action="<c:url value='/upload?id=${Candidate.id}'/>" method="post"
                               enctype="multipart/form-data">
                             <div class="checkbox">
-                                <input type="file" name="file">
+                                <input type="file" name="file" id="photo">
                             </div>
                             <br>
-                            <button type="submit" class="btn btn-primary">Add photo</button>
+                            <button type="submit" class="btn btn-primary"
+                                    onclick="return validateCandidateEditPhoto()">Add photo</button>
                         </form>
                     </td>
                 </tr>
@@ -95,27 +101,37 @@
                     <input type="hidden" class="form-control" name="id"
                            value="<c:out value="${Candidate.id}"/>">
                     <div class="form-group">
-                        <label>Имя</label>
-                        <input type="text" class="form-control" name="firstName"
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" name="firstName" id="name"
                                value="<c:out value="${Candidate.firstName}"/>">
+                        <span id="resultCheckName" style="color: #ff0000;"></span>
                     </div>
                     <div class="form-group">
-                        <label>Фамилия</label>
-                        <input type="text" class="form-control" name="lastName"
+                        <label for="lastName">Фамилия</label>
+                        <input type="text" class="form-control" name="lastName" id="lastName"
                                value="<c:out value="${Candidate.lastName}"/>">
+                        <span id="resultCheckLastName" style="color: #ff0000;"></span>
                     </div>
                     <div class="form-group">
-                        <label>Возраст</label>
+                        <label for="city">Город</label>
+                        <input type="text" class="form-control" name="city" id="city"
+                               value="<c:out value="${Candidate.city}"/>">
+                        <span id="resultCheckCity" style="color: #ff0000;"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Возраст</label>
                         <c:choose>
                             <c:when test="${Candidate.id == 0}">
-                                <input type="number" class="form-control" name="age" align="left"
+                                <input type="number" class="form-control" name="age" align="left" id="age"
                                        value=""></c:when>
                             <c:when test="${Candidate.id > 0}">
-                                <input type="number" class="form-control" name="age" align="left"
+                                <input type="number" class="form-control" name="age" align="left" id="age"
                                        value="<c:out value="${Candidate.age}"/>"></c:when>
                         </c:choose>
+                        <span id="resultCheckAge" style="color: #ff0000;"></span>
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary"
+                            onclick="return validateCandidateEdit()">Сохранить</button>
                 </form>
                 </form>
             </div>

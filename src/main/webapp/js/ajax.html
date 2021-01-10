@@ -16,7 +16,7 @@
             $.ajax({
                 type: 'POST',
                 url: 'http://localhost:8080/job4j_dreamjob/greet',
-                data: JSON.stringify({text: $('#exampleInputEmail1').val()}),
+                data: JSON.stringify({text: $('#tags').val()}),
                 dataType: 'json'
             }).done(function(data) {
                 document.getElementById("out").innerHTML = 'JSON. Текст принятого сообщения: ' + data.text;
