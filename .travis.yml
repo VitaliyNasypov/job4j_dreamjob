@@ -12,4 +12,4 @@ sudo: false
 after_success: bash <(curl -s https://codecov.io/bash)
 env:
   global:
-    - CODECOV_TOKEN="2d6f1e1f-8661-4209-82cd-e24374f97af4"
+    - CODECOV_TOKEN="e2a3f107-1eba-4cce-8201-311bd37baaf1"
