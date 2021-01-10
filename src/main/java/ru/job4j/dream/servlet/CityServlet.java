@@ -13,12 +13,14 @@ import java.util.List;
 public class CityServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         doPost(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         if (req.getParameter("term").matches("\\D+")) {
             String findElement = req.getParameter("term").substring(0, 1).toUpperCase()
                     + req.getParameter("term").substring(1);

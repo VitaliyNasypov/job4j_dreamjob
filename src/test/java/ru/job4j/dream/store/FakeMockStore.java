@@ -14,12 +14,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class FakeMockStore implements Store {
     private static final FakeMockStore INST = new FakeMockStore();
+    private static final AtomicInteger POST_ID = new AtomicInteger(3);
+    private static final AtomicInteger CANDIDATE_ID = new AtomicInteger(3);
+    private static final AtomicInteger USER_ID = new AtomicInteger(1);
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
     private final Map<Integer, User> users = new ConcurrentHashMap<>();
-    private static AtomicInteger POST_ID = new AtomicInteger(3);
-    private static AtomicInteger CANDIDATE_ID = new AtomicInteger(3);
-    private static AtomicInteger USER_ID = new AtomicInteger(1);
 
     private FakeMockStore() {
         posts.put(1, new Post(1, "Junior Java Job", "Requirements: Java Core",
@@ -94,8 +94,8 @@ public class FakeMockStore implements Store {
     public User findByUser(String email, String password) {
         User user = new User();
         for (Map.Entry<Integer, User> entry : users.entrySet()) {
-            if (entry.getValue().getEmail().equals(email) &&
-                    entry.getValue().getPassword().equals(password)) {
+            if (entry.getValue().getEmail().equals(email)
+                    && entry.getValue().getPassword().equals(password)) {
                 user = entry.getValue();
             }
         }

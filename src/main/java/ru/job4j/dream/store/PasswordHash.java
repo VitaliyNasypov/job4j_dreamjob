@@ -37,7 +37,6 @@ public class PasswordHash {
                 .getBytes(StandardCharsets.UTF_8);
     }
 
-
     private String toHex(byte[] array) throws NoSuchAlgorithmException {
         BigInteger bi = new BigInteger(1, array);
         String hex = bi.toString(16);

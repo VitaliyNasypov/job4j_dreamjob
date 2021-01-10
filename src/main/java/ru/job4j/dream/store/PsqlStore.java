@@ -116,7 +116,8 @@ public class PsqlStore implements Store {
     private void create(Post post, User user) {
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection
-                     .prepareStatement("INSERT INTO posts(name, description, created,user_email) VALUES (?,?,?,?)",
+                     .prepareStatement("INSERT INTO posts(name, "
+                                     + "description, created,user_email) VALUES (?,?,?,?)",
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, post.getName());
             preparedStatement.setString(2, post.getDescription());
@@ -177,7 +178,9 @@ public class PsqlStore implements Store {
     private void create(Candidate candidate, User user) {
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection
-                     .prepareStatement("INSERT INTO candidates(firstName, lastName, age, user_email, city_id) VALUES (?,?,?,?,?)",
+                     .prepareStatement("INSERT INTO candidates("
+                                     + "firstName, lastName, age, user_email, city_id) "
+                                     + "VALUES (?,?,?,?,?)",
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, candidate.getFirstName());
             preparedStatement.setString(2, candidate.getLastName());
@@ -215,8 +218,10 @@ public class PsqlStore implements Store {
 
     private void updatePhoto(Candidate candidate) {
         if (candidate.getIdPhoto() != null) {
-            Path oldFileName = Path.of(File.separator + "bin" + File.separator
-                    + "images" + File.separator + "photo_id" + File.separator + candidate.getIdPhoto());
+            Path oldFileName = Path.of(File.separator + "bin"
+                    + File.separator
+                    + "images" + File.separator + "photo_id"
+                    + File.separator + candidate.getIdPhoto());
             candidate.setIdPhoto(candidate.getId() + "_" + candidate.getIdPhoto().split("_", 2)[1]);
             Path newFileName = Path.of(File.separator + "bin" + File.separator
                     + "images" + File.separator + "photo_id" + File.separator
@@ -290,11 +295,13 @@ public class PsqlStore implements Store {
              PreparedStatement preparedStatement = connection
                      .prepareStatement("select * from users where email = ?")) {
             preparedStatement.setString(1, user.getEmail());
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement
+                    .executeQuery()) {
                 filteredRowSet.populate(resultSet);
             }
             if (filteredRowSet.next()) {
-                if (new PasswordHash().validatePassword(password, filteredRowSet.getString("password"))) {
+                if (new PasswordHash().validatePassword(password,
+                        filteredRowSet.getString("password"))) {
                     user.setId(filteredRowSet.getInt("id"));
                     user.setName(filteredRowSet.getString("name"));
                     user.setGroup(filteredRowSet.getString("group_user"));
@@ -310,7 +317,8 @@ public class PsqlStore implements Store {
     public void save(User user) {
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection
-                     .prepareStatement("INSERT INTO users(name, email, password, group_user) VALUES (?,?,?,?)",
+                     .prepareStatement("INSERT INTO users(name, email, password, group_user) "
+                                     + "VALUES (?,?,?,?)",
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getEmail());
