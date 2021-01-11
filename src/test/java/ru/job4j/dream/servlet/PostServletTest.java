@@ -73,5 +73,4 @@ public class PostServletTest {
         Mockito.verify(req).setAttribute(getAttribute.capture(), Mockito.anyCollection());
         Assert.assertEquals(getAttribute.getValue(), "posts");
     }
-
 }
