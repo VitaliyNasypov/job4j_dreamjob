@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.slf4j.LoggerFactory;
 import ru.job4j.dream.store.FakeMockStore;
 import ru.job4j.dream.store.PsqlStore;
 import ru.job4j.dream.store.Store;
@@ -19,12 +20,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(PsqlStore.class)
+@PrepareForTest({PsqlStore.class, LoggerFactory.class})
 public class AuthServletTest {
 
     @Test
     public void shouldSuccessfullyAuthorizedUser() throws ServletException, IOException {
         Store store = FakeMockStore.instOf();
+        PowerMockito.mockStatic(LoggerFactory.class);
         PowerMockito.mockStatic(PsqlStore.class);
         Mockito.when(PsqlStore.instOf()).thenReturn(store);
         HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
@@ -40,6 +42,7 @@ public class AuthServletTest {
     @Test
     public void shouldFailAuthorizedUser() throws ServletException, IOException {
         Store store = FakeMockStore.instOf();
+        PowerMockito.mockStatic(LoggerFactory.class);
         PowerMockito.mockStatic(PsqlStore.class);
         Mockito.when(PsqlStore.instOf()).thenReturn(store);
         HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
