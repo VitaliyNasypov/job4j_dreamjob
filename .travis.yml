@@ -8,16 +8,17 @@ jdk: oraclejdk11
 services:
   - postgresql
 
+os:
+  - linux
+
+dist: xenial
+
 before_install:
   - psql -c 'create database dreamjob;' -U postgres
 
-# Режим обычного пользователя для сборки проекта.
-sudo: false
-
 # После выполнения сборки запустить скрипт, который будет собирать статистику по JaCoCo
 # И отправлять на сервис https://codecov.io/
-after_success: 
--bash <(curl -s https://codecov.io/bash)
+after_success: bash <(curl -s https://codecov.io/bash)
 
 env:
   global:
