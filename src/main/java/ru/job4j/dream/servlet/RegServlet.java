@@ -16,7 +16,7 @@ public class RegServlet extends HttpServlet {
             throws ServletException, IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        if (PsqlStore.instOf().findByUser(email, password).getId() > 0) {
+        if (PsqlStore.instOf().isUserCreated(email)) {
             req.setAttribute("error", "Данный пользователь существует");
             req.getRequestDispatcher("reg.jsp").forward(req, resp);
         } else {

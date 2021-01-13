@@ -22,6 +22,8 @@ public interface Store {
 
     User findByUser(String email, String password);
 
+    boolean isUserCreated(String email);
+
     void save(User user);
 
     List<String> findByCity(String findCity);

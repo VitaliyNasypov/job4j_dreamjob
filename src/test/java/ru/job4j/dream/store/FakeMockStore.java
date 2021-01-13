@@ -103,6 +103,16 @@ public class FakeMockStore implements Store {
     }
 
     @Override
+    public boolean isUserCreated(String email) {
+        for (Map.Entry<Integer, User> entry : users.entrySet()) {
+            if (entry.getValue().getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public List<String> findByCity(String findCity) {
         return null;
     }

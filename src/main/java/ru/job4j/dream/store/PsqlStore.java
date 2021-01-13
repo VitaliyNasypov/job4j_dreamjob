@@ -314,6 +314,28 @@ public class PsqlStore implements Store {
     }
 
     @Override
+    public boolean isUserCreated(String email) {
+        try (Connection connection = pool.getConnection();
+             FilteredRowSet filteredRowSet = RowSetProvider.newFactory().createFilteredRowSet();
+             PreparedStatement preparedStatement = connection
+                     .prepareStatement("select count(id) from users where email = ?")) {
+            preparedStatement.setString(1, email);
+            try (ResultSet resultSet = preparedStatement
+                    .executeQuery()) {
+                filteredRowSet.populate(resultSet);
+            }
+            if (filteredRowSet.next()) {
+                if (filteredRowSet.getInt("count") == 1) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return false;
+    }
+
+    @Override
     public void save(User user) {
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection
