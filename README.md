@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/VitaliyNasypov/job4j_dreamjob/branch/master/graph/badge.svg?token=DA9SAMFJ7T)](https://codecov.io/gh/VitaliyNasypov/job4j_dreamjob)
 <br>
 <br>
-Техническое задание - проект "Работа мечты".
+Техническое задание - проект "Работа мечты" с использованием Servlet.
 
 Краткое описание проекта:
 - В системе два типа пользователей: Кандидаты и кадровики.
@@ -23,6 +23,7 @@
 
 
 В данном проекте использовались:
+- Java 11
 - Servlet, JSP, JSTL.
 - HTML, CSS, JavaScript, jQuery.
 - PostgreSQL, Liquibase - все данные хранились в БД. По мере необходимости извлекались и использовались.
